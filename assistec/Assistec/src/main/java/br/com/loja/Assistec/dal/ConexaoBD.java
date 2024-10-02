@@ -3,7 +3,7 @@ package br.com.loja.Assistec.dal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class ModuloConexao {
+public class ConexaoBD {
 
 	public static Connection conector() {
 		Connection conexao = null;
@@ -18,6 +18,11 @@ public class ModuloConexao {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public static Connection getConnection() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

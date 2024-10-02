@@ -1,6 +1,5 @@
 package br.com.loja.Assistec;
 
-import br.com.loja.Assistec.controller.LoginController;
 import br.com.loja.Assistec.view.LoginView;
 
 /**
@@ -8,9 +7,9 @@ import br.com.loja.Assistec.view.LoginView;
  */
 public class App {
     public static void main(String[] args) {
-        LoginView view = new LoginView();
-        
-        LoginController conroller = new LoginController(view);
+    	LoginView view = new LoginView();
+    	view.setLocationRelativeTo(null);
+		view.setVisible(true);
         
     }
 }
