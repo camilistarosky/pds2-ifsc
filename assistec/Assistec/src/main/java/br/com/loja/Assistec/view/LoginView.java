@@ -1,25 +1,29 @@
 package br.com.loja.Assistec.view;
 
-import javax.swing.JFrame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.com.loja.Assistec.controller.LoginController;
 
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.sql.SQLException;
-
 public class LoginView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	public JTextField txtUsuario;
+	public JTextField txtLogin;
 	public JPasswordField txtSenha;
 	public JButton btnLogin;
 	public JLabel lblStatus;
@@ -54,9 +58,19 @@ public class LoginView extends JFrame {
 	public void initComponents() {
 		lblUsuario = new JLabel();
 		lblSenha = new JLabel();
-		txtUsuario = new JTextField();
+		txtLogin = new JTextField();
 		txtSenha = new JPasswordField();
 		btnLogin = new JButton();
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					onClickBtnLogin();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		lblStatus = new JLabel();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,7 +104,7 @@ public class LoginView extends JFrame {
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(txtSenha, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtUsuario, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(txtLogin, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))))
 					.addContainerGap(180, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
@@ -99,7 +113,7 @@ public class LoginView extends JFrame {
 					.addContainerGap(60, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblUsuario)
-						.addComponent(txtUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(txtLogin, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblSenha)
@@ -113,5 +127,37 @@ public class LoginView extends JFrame {
 		getContentPane().setLayout(groupLayout);
 		pack();
 		setLocationRelativeTo(null);
+	}
+
+	// método para clicar no btão e acionar o método autenticar()
+	protected void onClickBtnLogin() throws SQLException {
+		ArrayList<String> autenticado = new ArrayList<>();
+		
+		// pre validação
+		if(txtLogin.getText() != null && 
+				!txtLogin.getText().isEmpty() &&
+				String.valueOf(txtSenha.getPassword()) != null &&
+				!String .valueOf(txtSenha.getPassword()).isEmpty()){
+			LoginController lc = new LoginController();
+			
+			// chamar o m´todo do controle (autenticar)
+			try {
+				autenticado = lc.autenticar(txtLogin.getText(), new String (txtSenha.getPassword()));
+				if(autenticado.get(0) != null) {
+					JOptionPane.showMessageDialog(this, "Bem Vindo " + autenticado.get(0) + "acesso liberado!", "Atnção", JOptionPane.INFORMATION_MESSAGE);
+					dispose();
+					//PrincipalView prinipal = new PrincipalView(user, perfil );
+					
+					}
+			} catch (NullPointerException n) {
+				JOptionPane.showMessageDialog(this, "Erro");
+				n.printStackTrace();
+			}
+					
+				}
+			
+		else {
+			
+		}
 	}
 }

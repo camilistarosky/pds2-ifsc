@@ -23,7 +23,7 @@ public class PrincipalView extends javax.swing.JFrame {
 	private JMenuItem menuSobre;
 	private JMenuItem menuUsuariosCadastrar;
 
-	public PrincipalView() {
+	public PrincipalView(String user, String perfil) {
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Sistema de Gestão - Tela Principal");
 		setBounds(100, 100, 541, 358);
@@ -74,6 +74,13 @@ public class PrincipalView extends javax.swing.JFrame {
 		menuBar.add(menuAjuda);
 
 		setJMenuBar(menuBar);
+		
+		lblUsuario.setText(user);
+		if("Admin.".equalsIgnoreCase(perfil)) {
+			MenuUsuarios.setEnabled(true);
+			MenuRelatorio.setEnabled(true);
+			
+		}
 
 		// Layout do JFrame
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -104,6 +111,14 @@ public class PrincipalView extends javax.swing.JFrame {
 
 	private void menuSobreActionPerformed(java.awt.event.ActionEvent evt) {
 		JOptionPane.showMessageDialog(null, "Sistema de Gestão Assistec - Versão 1.0");
+	}
+	
+	protected void listarUsuarios() {
+		ListarUsuariosView frame = new ListarUsuariosView(); {
+			frame.setLocationRelativeTo(frame);
+			frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			frame.setVisible(true);
+		}				
 	}
 
 }
