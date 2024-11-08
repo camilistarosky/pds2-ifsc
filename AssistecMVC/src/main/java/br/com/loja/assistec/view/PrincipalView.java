@@ -16,8 +16,9 @@ package br.com.loja.assistec.view;
 
 	public class PrincipalView extends JFrame {
 
-		JMenuItem menuSair;
-		JMenuItem menuSobre;
+		private JMenuItem mSair;
+		private JMenuItem mSobre;
+		private JMenuItem mUsuario;
 		
 
 		public PrincipalView(String user, String perfil) {
@@ -49,38 +50,17 @@ package br.com.loja.assistec.view;
 			JMenu menuArquivo = new JMenu("Arquivo");
 			menuBar.add(menuArquivo);
 			
-			menuSair = new JMenuItem("Sair");
-			menuSair.setActionCommand("MenuSairAction");
-
-			/*menuSair.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					int sair = JOptionPane.showConfirmDialog(null, 
-							"Tem certeza que deseja sair?",
-							"Atenção", JOptionPane.YES_NO_OPTION);
-					if(sair == 0) {
-						System.exit(0);
-					}
-				}
-			});*/
-			menuArquivo.add(menuSair);
+			mSair = new JMenuItem("Sair");
+			mSair.setActionCommand("MenuSairAction");
+			menuArquivo.add(mSair);
 			
 			JMenu menuCadastro = new JMenu("Cadastro");
 			menuCadastro.setEnabled(false);
 			menuBar.add(menuCadastro);
 			
-			JMenuItem menuUsuarios = new JMenuItem("Usuários");
-			menuUsuarios.setActionCommand("MenuUsuariosAction");
-			/*menuUsuarios.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						listarUsuarios();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-			});*/
-			menuCadastro.add(menuUsuarios);
+			mUsuario = new JMenuItem("Usuários");
+			mUsuario.setActionCommand("MenuUsuariosAction");
+			menuCadastro.add(mUsuario);
 			
 			JMenu menuRelatorio = new JMenu("Relatórios");
 			menuRelatorio.setEnabled(false);
@@ -89,16 +69,10 @@ package br.com.loja.assistec.view;
 			JMenu menuAjuda = new JMenu("Ajuda");
 			menuBar.add(menuAjuda);
 			
-			JMenuItem menuSobre = new JMenuItem("Sobre");
-			menuSobre.setActionCommand("MenuSobreAction");
-			/*menuSobre.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(null,
-							"Sistema de gestão Assistec - Versão 1.0");
-					
-				}
-			});*/
-			menuAjuda.add(menuSobre);
+			mSobre = new JMenuItem("Sobre");
+			mSobre.setActionCommand("MenuSobreAction");
+			
+			menuAjuda.add(mSobre);
 			
 			lblUsuario.setText(user);
 			
@@ -110,17 +84,28 @@ package br.com.loja.assistec.view;
 		}
 		
 
-		public void addMenuListener(ActionListener listener) {
-	        menuSair.addActionListener(listener);
-	        menuSobre.addActionListener(listener);
-	        //menuListarUsuarios.addActionListener(listener);
+		public void addPrincipalListener(ActionListener listener) {
+	        mSair.addActionListener(listener);
+	        mSobre.addActionListener(listener);
+	        mUsuario.addActionListener(listener);
 	    }
-
-/*		protected void listarUsuarios() throws SQLException {
-			ListarUsuariosView frame = new ListarUsuariosView();
-			frame.setLocationRelativeTo(frame);
-			frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-			frame.setVisible(true);
+		
+		public void mostrarMensagem(String mensagem, String tipo) {
+			int messageType = switch (tipo) {
+			case "Atenção" -> JOptionPane.WARNING_MESSAGE;
+			case "Informação" -> JOptionPane.INFORMATION_MESSAGE;
+			case "Erro" -> JOptionPane.ERROR_MESSAGE;
+			default -> JOptionPane.PLAIN_MESSAGE;
+			};
+			JOptionPane.showMessageDialog(this, mensagem, tipo, messageType);
 		}
-	}*/
+		
+		public int SairSistema() {
+			int sair = JOptionPane.showConfirmDialog(null,
+	                "Você deseja sair??",
+	                "Atenção", JOptionPane.YES_NO_OPTION);
+			return sair;
+		}
+
+
 }

@@ -45,7 +45,7 @@ public class LoginController {
 			@Override
 			public void windowClosed(WindowEvent e) {
 				if (listaDadosView != null && !listaDadosView.isEmpty()) {
-					new PrincipalController(listaDadosView.get(0), listaDadosView.get(0));
+					new PrincipalController(listaDadosView.get(0), listaDadosView.get(1));
 				}
 			}
 		});
@@ -56,26 +56,33 @@ public class LoginController {
 	}
 
 	public void processarLogin() {
-		String login = view.getLogin();
-		String senha = view.getSenha();
-		try {
-			if (!dao.bancoOnline()) {
-				view.mostrarMensagem("Banco de dados desconectado!", "Erro");
-			} else if (login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
-				listaDadosView = autenticar(login, senha);
-				if (listaDadosView != null) {
-					view.mostrarMensagem("Bem vindo " + listaDadosView.get(0) + " acesso liberado!", "Informação");
-					view.dispose();
-				} else {
-					view.mostrarMensagem("Usuário ou senha inválidos!", "Atenção");
-				}
-			} else {
-				view.mostrarMensagem("Verifique as informações!", "Atenção");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    String login = view.getLogin();
+	    String senha = view.getSenha();
+	    try {
+	        if (!dao.bancoOnline()) {
+	            view.mostrarMensagem("Banco de dados desconectado!", "Erro");
+	        } else if (login != null && !login.isEmpty() && senha != null && !senha.isEmpty()) {
+	            listaDadosView = autenticar(login, senha);
+	            if (listaDadosView != null) {
+	                String nome = listaDadosView.get(0);
+	                String perfil = listaDadosView.get(1);
+	                
+	                view.mostrarMensagem("Bem-vindo " + nome + ". Acesso liberado!", "Informação");
+	                
+	                view.dispose();
+	                
+	                new PrincipalController(nome, perfil);
+	            } else {
+	                view.mostrarMensagem("Usuário ou senha inválidos!", "Atenção");
+	            }
+	        } else {
+	            view.mostrarMensagem("Verifique as informações!", "Atenção");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
+	
 
 	public ArrayList<String> autenticar(String login, String senha) throws SQLException {
 		Usuario user = dao.autenticar(login, senha);

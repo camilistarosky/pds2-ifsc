@@ -1,5 +1,6 @@
 package br.com.loja.assistec.controller;
 
+
 import br.com.loja.assistec.view.PrincipalView;
 
 import javax.swing.*;
@@ -20,40 +21,35 @@ public class PrincipalController {
         this.view.setLocationRelativeTo(null);
         this.view.setVisible(true);
     }
+    
+    private class principalListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if ("MenuSairAction".equals(e.getActionCommand())) {
+				sair();
+			}else if ("MenuSobreAction".equals(e.getActionCommand())) {
+				sobre();
+			}
+		}
+	}
 
     private void configurarListeners() {
-        view.addMenuListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String actionCommand = e.getActionCommand();
-                if ("MenuSairAction".equals(actionCommand)) {
-                    sair();
-                } else if ("MenuSobreAction".equals(actionCommand)) {
-                    sobre();
-                }
-        }});
+		view.addPrincipalListener(new principalListener());
+
 
     }
+    
 
     private void sair() {
-        int sair = JOptionPane.showConfirmDialog(view,
-                "Tem certeza que deseja sair?",
-                "Atenção", JOptionPane.YES_NO_OPTION);
-        if (sair == 0) {
+    	int Resposta = view.SairSistema() ;
+        if (Resposta == 0) {
             System.exit(0);
         }
     }
 
     private void sobre() {
-        JOptionPane.showMessageDialog(view,
-                "Sistema de Gestão ASSISTEC - Versão 1.0",
-                "Sobre", JOptionPane.INFORMATION_MESSAGE);
+        view.mostrarMensagem("O sistema loja bd é da aula de PDS 2024.2", "Informação");
     }
 
-    /*private void listarUsuarios() {
-        ListarUsuariosView listarUsuariosView = new ListarUsuariosView();
-        listarUsuariosView.setLocationRelativeTo(view);
-        listarUsuariosView.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        listarUsuariosView.setVisible(true);
-    }*/
+
 }
