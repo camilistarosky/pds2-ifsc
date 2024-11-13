@@ -70,9 +70,12 @@ public class PrincipalController {
 
 	// Exibe a mensagem de confirmação de saída e fecha o sistema se confirmado
 	private void sairDoSistema() {
-		int confirmacao = principalView.confirmarFecharSistema();
-		if (confirmacao == 0) {
+		MensagemView mv = new MensagemView("Deseja sair do Sistema?");
+		int confirmacao = mv.getResposta();
+		if (confirmacao == 1) {
 			System.exit(0);
+		} else {
+			
 		}
 	}
 
